@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./src/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./src/css/reset.css" />
+    <link rel="stylesheet" href="./src/css/responsive.css" />
+    <link rel="stylesheet" href="./src/css/style.css" />
+
+    <script src="./src/js/index.js" defer></script>
+    <title>Tracevia - SOS</title>
+</head>
+    
+<body>
+    <header id="principal-nav">
+    </header>
+    <main>
+
+        <section class="main-section " id="no-call-receiving">
+            <H1>ATENDENTE</H1>
+                <h3 class="status">Desconectado</h3>
+                <div id="counterTime">00:00:00</div>
+                <button id="end-call">Encerrar chamada</button>
+            </button>
+        </section>
+        <section class="main-section" id="call-receiving">
+            <h1>Você está recebendo uma ligação de. Deseja aceitar?</h1>
+            <img src="./src/images/telefone.png" class="phone-image" alt="Imagem de um telefone vibrando.">
+           <div class="botoes">
+            <button class="accept choiceButton">Aceitar</button>
+            <button class="decline choiceButton">Rejeitar</button>
+           </div>
+        </section>
+    </main>
+    <script  src="./src/js/importsip/jssip-3.9.2.js"></script>
+</body>
+
+</html>

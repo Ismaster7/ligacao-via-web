@@ -1,0 +1,11 @@
+@media screen and (max-width: 768px) {
+    main section .square {
+        width: 400px;
+        height: 600px;
+        margin-top: 150px;
+    }
+    main section #sos-button {
+        width: 300px;
+        height: 60px;
+    }
+}
