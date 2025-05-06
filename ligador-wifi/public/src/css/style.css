@@ -13,6 +13,10 @@ main{
     background-color: #fff;
 }
 
+#main-section{
+    display: none;
+}
+
 
 main section .square {
     width: 400px;
@@ -22,6 +26,7 @@ main section .square {
     margin-top: 50px;
     display: flex;
     border-radius: 10px;
+    transform: translateX(-25%)
 }
 
 
@@ -32,6 +37,8 @@ main section .square {
     min-height: 400px;
     background-color: white;
     border-radius: 10px;
+    padding: 1rem;
+    text-wrap: wrap;
     box-shadow: 5px 5px 5px black;
     display: flex;
     flex-direction: column;
@@ -43,4 +50,23 @@ main section .square {
 .main-section button{
     padding: 20px 10px;
     font-size: 2rem;
+}
+
+.spinner{
+    width: 5rem;
+    height: 5rem;
+    border: 0.5rem solid white;
+    border-top: 0.5rem solid blue;
+    border-radius: 50%;
+    background-color: black;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin{
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
 }

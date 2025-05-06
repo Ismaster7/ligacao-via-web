@@ -14,12 +14,20 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+app.get("/:id", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+app.get("/router", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 const options = {
-    key: fs.readFileSync("C:/Certificados-SSL/asterisk.key"),
-    cert: fs.readFileSync("C:/Certificados-SSL/asterisk.crt"),
+    //key: fs.readFileSync("C:/Certificados-SSL/asterisk.key"),
+   // cert: fs.readFileSync("C:/Certificados-SSL/asterisk.crt"),
+    key: fs.readFileSync("C:/Users/ismae/Desktop/certificates/privkey.pem"),
+    cert: fs.readFileSync("C:/Users/ismae/Desktop/certificates/cert.pem")
 };
 
-https.createServer(options, app).listen(4200, '0.0.0.0', () => {
-    console.log("Servidor https rodando na porta 4200");
+https.createServer(options, app).listen(4205, '0.0.0.0', () => {
+    console.log("Servidor https rodando na porta https://localhost:4205");
 });

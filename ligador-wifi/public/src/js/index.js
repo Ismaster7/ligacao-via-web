@@ -1,15 +1,65 @@
 // Configuração inicial do JsSIP
-const socket = new JsSIP.WebSocketInterface('wss://raspberrypi.local:8089/ws');
-const configuration = {
-    uri: 'sip:1001@192.168.1.73', // URI do cliente
-    password: '1234', // Senha do cliente
-    sockets: [socket],
-    register: true,
-    session_timers: false,
-};
+let sipNumber;
+let pass;
+ let configuration;
+ let dialpanacount = "800";
+ let ua
+let ipNumber = "www.homologacaotracevia.com.br";
+const group = 1;
+const path = window.location.pathname;
+let adre = `http://localhost:8085/api/v1/sip${path}`
+const mainSection = document.querySelector("#main-section");
+const loadingSection = document.querySelector("#loading-section")
+const loginName = document.querySelector("#login-name")
+console.log("o adre ficou: " + adre)
+async function initializeSipNumber() {
+    const sipNumbere = await getFreeSip()
+    sipNumber = Object.keys(sipNumbere)[0];
+    pass = Object.values(sipNumbere)[0];
+    console.log(sipNumber + " " + " " + pass)
+}
+initializeSipNumber().then(() => {
+    configuration = initialWebSocketConfiguration();
+    console.log("minha configuration " + configuration)
+    ua = new JsSIP.UA(configuration);
+    ua.on('registered', () => {
+        updateSectionDisplay(true, false)
+        //Colocar post
+        console.log(`Registro bem sucedido como ${configuration.uri}`)
+        updateMainSection("Logado como sip: " + sipNumber + " usando o roteador " + window.location.pathname)
+    })
+    ua.start();
+});
+function updateSectionDisplay(mainSectionDisplay, loadingSectionDisplay){
+   mainSectionDisplay? mainSection.style.display = "flex" : mainSection.style.display = "none" ;
+    loadingSectionDisplay ? loadingSection.style.display = "flex": loadingSection.style.display = "none";
+}
+
+function updateMainSection(content){
+    loginName.innerHTML = content
+}
+
+
+function initialWebSocketConfiguration() {
+    
+    const socket = new JsSIP.WebSocketInterface('wss://www.homologacaotracevia.com.br/ws');
+
+  //  const socket = new JsSIP.WebSocketInterface('wss://192.168.1.92:8089/ws');
+    return {
+        uri: `sip:${sipNumber}@${ipNumber}`,
+        password: pass,
+        sockets: [socket],
+        register: true,
+        session_timers: false,
+    };
+
+
+}
 
 // Criação do User Agent
-const ua = new JsSIP.UA(configuration);
+
+
+
 
 // Variável para armazenar a sessão atual
 let currentSession = null;
@@ -53,7 +103,7 @@ function startCall() {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
         .then((stream) => {
             // Inicia a chamada para o atendente
-            currentSession = ua.call('sip:1002@192.168.1.73', options)
+            currentSession = ua.call(`sip:${dialpanacount}@${ipNumber}`, options)
 
             // Adiciona o stream local à chamada
             currentSession.connection.addEventListener('track', (event) => {
@@ -103,4 +153,24 @@ document.querySelector("#sos-button").addEventListener('click', () => {
 });
 
 // Inicia o User Agent
-ua.start();
+
+
+
+async function getFreeSip(){
+    //const response = await fetch("http://192.168.1.45:8085/api/v1/sip");
+    const response = await fetch(adre);
+    try{
+        if(!response){
+            throw new Error("Erro ao obter sip");
+        }
+        const sipData = await response.json();
+        
+        return sipData
+    }catch(e){
+        console.log("Erro ao obter sip")
+        alert("Trocar de roteador")
+    }
+
+    
+
+}

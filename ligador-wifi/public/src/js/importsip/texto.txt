@@ -1,0 +1,57 @@
+		<h:outputStylesheet library="css/wifi" name="style.css" />
+        <h:outputScript library="js/wifi/importsip" name="jssip-3.9.2.js" />
+		<h:outputScript library="js/wifi" name="atendente.js" />
+        
+
+        <main>
+
+        <div class="main-section " id="no-call-receiving">
+            <h:outputText value="ATENDENTE" />
+                <h3 class="status" id="call_status">Desconectado</h3>
+                <div id="counterTime">00:00:00</div>
+                <button id="end-call">Encerrar chamada</button>
+          
+        </div>
+        <div class="main-section" id="call-receiving">
+            <h1>Você está recebendo uma ligação de. Deseja aceitar?</h1>
+            <img src="./src/images/telefone.png" class="phone-image" alt="Imagem de um telefone vibrando."></img>
+           <div class="botoes">
+            <button class=" choiceButton" id="accept">Aceitar</button>
+            <button class="choiceButton" id="decline">Rejeitar</button>
+           </div>
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[caller03]
+type=endpoint
+context=caller
+disallow=all
+allow=opus,ulaw
+auth=caller03
+aors=caller03
+
+[caller03]
+type=auth
+auth_type=userpass
+password=1234
+username=caller03
+
+[caller03]
+type=aor
+max_contacts=1
+transport=wss_transport
