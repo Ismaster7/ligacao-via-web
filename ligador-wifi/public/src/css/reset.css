@@ -3,3 +3,23 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+#wifi-ready-bt{
+	position: absolute;
+	bottom: 0%;
+	right: 3%;
+	width: 100px;
+	height: 100px;
+	background-color: red;
+	z-index: 4;
+    border-top-right-radius:5px ;
+    border-top-left-radius:5px ;
+    justify-content:space-evenly;
+    transition: all 0.5s ease-in-out;
+    background-color: #eae7de;
+}
+
+#wifi-ready-bt:hover{
+    height: 100px;
+
+}

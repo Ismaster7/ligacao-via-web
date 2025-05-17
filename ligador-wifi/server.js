@@ -25,7 +25,7 @@ const options = {
     //key: fs.readFileSync("C:/Certificados-SSL/asterisk.key"),
    // cert: fs.readFileSync("C:/Certificados-SSL/asterisk.crt"),
     key: fs.readFileSync("C:/Users/ismae/Desktop/certificates/privkey.pem"),
-    cert: fs.readFileSync("C:/Users/ismae/Desktop/certificates/cert.pem")
+    cert: fs.readFileSync("C:/Users/ismae/Desktop/certificates/fullchain.pem")
 };
 
 https.createServer(options, app).listen(4205, '0.0.0.0', () => {
