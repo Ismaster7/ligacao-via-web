@@ -11,6 +11,7 @@ let adre = `http://localhost:8085/api/v1/sip${path}`
 const mainSection = document.querySelector("#main-section");
 const loadingSection = document.querySelector("#loading-section")
 const loginName = document.querySelector("#login-name")
+let audio;
 const deviceId = getDeviceId()
 console.log("o adre ficou: " + adre)
 async function initializeSipNumber() {
@@ -99,21 +100,24 @@ async function startCall() {
     const eventHandlers = {
         progress: function(e) {
             console.log('Chamada em progresso...');
+            playAudio("outgoing")
         },
         failed: function(e) {
             console.log('Chamada falhou:', e.cause);
             currentSession = null;
-            updateCallButton();
+            manipulateSoSButton(false)
+            stopAudio()
         },
         ended: function(e) {
             console.log('Chamada encerrada:', e.cause);
             currentSession = null;
-            updateCallButton();
+            manipulateSoSButton(false)
+            stopAudio()
         },
         confirmed: function(e) {
             console.log('Chamada confirmada.');
-
-            updateCallButton();
+            stopAudio()
+            manipulateSoSButton(true)
         }
     };
     const data = new Date("2025-");
@@ -125,12 +129,13 @@ async function startCall() {
             offerToReceiveVideo: false
         },
     };
+
     try{
     // Solicita permissão para acessar o microfone
    const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
             // Inicia a chamada para o atendente
             if(stream){
-
+            manipulateSoSButton(true)
             await sendCallInfos()
             currentSession = ua.call(`sip:${dialpanacount}@${ipNumber}`, options)
 
@@ -145,10 +150,11 @@ async function startCall() {
             });
         }else{
             throw new Error("Erro ao capturar stream de áudio.");
-
+            manipulateSoSButton(false)
         }
          }catch(error) {
             alert('Erro ao acessar o microfone. Por favor, atualize a página e de as permissões necessárias');
+            manipulateSoSButton(false)
             console.log(error)
 }
 }
@@ -157,10 +163,36 @@ function endCall() {
     if (currentSession) {
         currentSession.terminate();
         currentSession = null;
-        updateCallButton();
+
     } else {
         console.log('Nenhuma chamada em andamento para encerrar.');
     }
+    manipulateSoSButton(false)
+}
+function playAudio(audioName){
+    const audioLocations = {
+        outgoing :"./src/sounds/outgoing.mp3"
+    }
+    audio = new Audio(audioLocations[audioName])
+    console.log(audioLocations[audioName])
+    audio.volume = 0.6;
+    audio.loop = true;
+    audio.play()
+}
+
+function stopAudio(){
+    audio.pause();
+    audio.currentTime = 0;
+
+}
+
+function manipulateSoSButton(state, progress){
+    const button = document.querySelector("#sos-button")
+    const text = document.querySelector("#login-name")
+    state? button.textContent = "Cancelar" : button.textContent = "Chamar";
+    state? text.textContent = "Encontrando Atendente..." : text.textContent = "Clique para Ligar";  
+    if(progress && state) text.textContent = "Em ligação"
+
 }
 
 // Função para atualizar o texto do botão de chamada
